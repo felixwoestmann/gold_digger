@@ -1,0 +1,25 @@
+### Kodak Gold:
+- Request: https://products.dm.de/store-availability/DE/products/dans/405075/stocklevel?storeNumbers=2577&view=basic
+  - Response: {"tenant":"de","dan":"405075","storeAvailability":[{"store":{"storeNumber":"2577"},"inStock":false,"listed":true,"stockLevel":0}]}
+
+- Request: https://products.dm.de/store-availability/DE/products/dans/405075/stocklevel?storeNumbers=1760,1767,2577&view=basic
+  - Response: {"tenant":"de","dan":"405075","storeAvailability":[{"store":{"storeNumber":"1760"},"inStock":false,"listed":true,"stockLevel":0},{"store":{"storeNumber":"1767"},"inStock":false,"listed":true,"stockLevel":0},{"store":{"storeNumber":"2577"},"inStock":false,"listed":true,"stockLevel":0}]}
+
+### Kodak Colorplus
+- Request: https://products.dm.de/store-availability/DE/products/dans/724104/stocklevel?storeNumbers=1760,1767,1890,2577&view=basic
+  - Response: {"tenant":"de","dan":"724104","storeAvailability":[{"store":{"storeNumber":"2577"},"inStock":true,"stockLevel":3},{"store":{"storeNumber":"1760"},"inStock":false,"listed":true,"stockLevel":0},{"store":{"storeNumber":"1767"},"inStock":false,"listed":true,"stockLevel":0},{"store":{"storeNumber":"1890"},"inStock":false,"listed":true,"stockLevel":0}]} 
+
+### Kodak Ultramax
+- Request: https://products.dm.de/store-availability/DE/products/dans/276758/stocklevel?storeNumbers=2577&view=basic
+  - Response: {"tenant":"de","dan":"276758","storeAvailability":[{"store":{"storeNumber":"2577"},"inStock":false,"listed":true,"stockLevel":0}]}
+
+
+###Store Overview
+- Request: https://store-data-service.services.dmtech.com/stores/bbox/51.08774681851418%2C13.568817587784991%2C51.00910694320609%2C13.762529388319962
+- Replce %2C to ,: https://store-data-service.services.dmtech.com/stores/bbox/51.08774681851418,13.568817587784991,51.00910694320609,13.762529388319962
+
+
+Wien:48.2205998,16.2399765
+Amsterdam:52.3545828,4.7638777
+https://store-data-service.services.dmtech.com/stores/bbox/52.3545828,4.7638777,48.2205998,16.2399765
+52.09474984342242,7.274791566610219,51.81838113459128,7.969270163522964
