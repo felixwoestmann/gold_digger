@@ -1,6 +1,5 @@
 import json
 
-
 class DmStore:
     id = None
     countryCode = None
@@ -58,3 +57,12 @@ def save_dm_stores_as_file(stores, filename):
     stores_json = json.dumps(stores, cls=DmStoreEncoder)
     f = open(filename, "w")
     f.write(stores_json)
+
+def load_dm_stores_from_file(filename):
+    f = open(filename, "r")
+    german_stores_list = []
+    for store in json.load(f):
+        s = DmStore(store.get("id"), store.get("countryCode"), store.get("storeNumber"), store.get("address"),
+                    store.get("latitude"), store.get("longitude"))
+        german_stores_list.append(s)
+    return german_stores_list

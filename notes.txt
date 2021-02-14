@@ -2,7 +2,7 @@
 - Request: https://products.dm.de/store-availability/DE/products/dans/405075/stocklevel?storeNumbers=2577&view=basic
   - Response: {"tenant":"de","dan":"405075","storeAvailability":[{"store":{"storeNumber":"2577"},"inStock":false,"listed":true,"stockLevel":0}]}
 
-- Request: https://products.dm.de/store-availability/DE/products/dans/405075/stocklevel?storeNumbers=1760,1767,2577&view=basic
+ - Request: https://products.dm.de/store-availability/DE/products/dans/405075/stocklevel?storeNumbers=1760,1767,2577&view=basic
   - Response: {"tenant":"de","dan":"405075","storeAvailability":[{"store":{"storeNumber":"1760"},"inStock":false,"listed":true,"stockLevel":0},{"store":{"storeNumber":"1767"},"inStock":false,"listed":true,"stockLevel":0},{"store":{"storeNumber":"2577"},"inStock":false,"listed":true,"stockLevel":0}]}
 
 ### Kodak Colorplus
