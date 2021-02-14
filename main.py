@@ -20,23 +20,25 @@ def calculate_distance_between_coordinates(latitude1, longitude1, latitude2, lon
     distance = R * c
     return distance
 
-def print_distance_stores_with_gold(stores):
-    stores_with_stocklevel = get_kodak_stock_for_stores(KODAK_GOLD, stores)
-    stores_with_gold = [store for store in stores_with_stocklevel if store.stocklevel_gold.stocklevel > 0]
+def print_distance_stores_with_product(stores,product_number):
+    stores_with_stocklevel = get_kodak_stock_for_stores(product_number, stores)
+    stores_with_product = [store for store in stores_with_stocklevel if store.get_stocklevel(product_number).stocklevel > 0]
     tuples = []
-    for store_with_gold in stores_with_gold:
+    for store_with_product in stores_with_product:
         tuples.append((
-            store_with_gold,
+            store_with_product,
             calculate_distance_between_coordinates(MYLATITUDE,
                                                    MYLONGITUDE,
-                                                   store_with_gold.latitude,
-                                                   store_with_gold.longitude)))
+                                                   store_with_product.latitude,
+                                                   store_with_product.longitude)))
     sorted_by_second = sorted(tuples, key=lambda tuple: tuple[1])
     for tuple in sorted_by_second:
         print(
-            f"Entfernung: {tuple[1]:.1f} km Stadt: {tuple[0].address['city']} Bestand: {tuple[0].stocklevel_gold.stocklevel} Packungen Gold")
+            f"Entfernung: {tuple[1]:.1f} km Stadt: {tuple[0].address['city']} Bestand: {tuple[0].get_stocklevel(product_number).stocklevel} Packungen {name_for_product_number.get(product_number,'Not Found')}")
 
 
 if __name__ == '__main__':
     stores = load_stores_from_file("german_stores.json")
-    print_distance_stores_with_gold(stores)
+    print_distance_stores_with_product(stores,KODAK_GOLD)
+    print_distance_stores_with_product(stores, KODAK_COLORPLUS)
+    print_distance_stores_with_product(stores, KODAK_ULTRAMAX)

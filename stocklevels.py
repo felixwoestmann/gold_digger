@@ -2,6 +2,12 @@ KODAK_GOLD = 405075
 KODAK_ULTRAMAX = 276758
 KODAK_COLORPLUS = 724104
 
+name_for_product_number = {
+    KODAK_GOLD: "Kodak Gold 3er",
+    KODAK_COLORPLUS: "Kodak Colorplus",
+    KODAK_ULTRAMAX: "Kodak Ultramax"
+}
+
 
 class Stocklevel:
     def __init__(self, product_number, stocklevel):

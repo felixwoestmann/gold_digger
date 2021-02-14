@@ -21,6 +21,14 @@ class Store:
         self.latitude = latitude
         self.longitude = longitude
 
+    def get_stocklevel(self,product_number):
+        switcher = {
+            KODAK_GOLD:self.stocklevel_gold,
+            KODAK_COLORPLUS:self.stocklevel_colorplus,
+            KODAK_ULTRAMAX:self.stocklevel_ultramax
+        }
+        return switcher.get(product_number,"Not found")
+
     def add_stocklevel(self, new_stocklevel):
         if new_stocklevel.product_number == KODAK_GOLD:
             self.stocklevel_gold = new_stocklevel
