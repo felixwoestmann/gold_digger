@@ -1,12 +1,4 @@
-class Store_dm:
-    def __init__(self, id, countryCode, storeNumber, address, latitude, longitude):
-        self.id = id
-        self.countryCode = countryCode
-        self.storeNumber = storeNumber
-        self.address = address
-        self.latitude = latitude
-        self.longitude = longitude
-
+from stores import *
 
 class Stocklevel:
     def __init__(self, dan, store, stocklevel):
@@ -14,33 +6,6 @@ class Stocklevel:
         self.store = store
         self.stocklevel = stocklevel
 
-
-def fetch_dm_stores_coordinates(edgeone, edgetwo):
-    import urllib3
-    http = urllib3.PoolManager()
-    r = http.request('GET',
-                     f"https://store-data-service.services.dmtech.com/stores/bbox/{edgeone},{edgetwo}")
-    return r.data
-
-
-def fetch_dm_stores():
-    import json
-    island = "64.7967375,-23.7289286"
-    turkey = "39.0014506,30.6868348"
-    muenster1 = "52.09474984342242,7.274791566610219"
-    muenster2 = "51.81838113459128,7.969270163522964"
-    # store_data=fetch_dm_stores(muenster1,muenster2)
-    store_data_json = json.loads(fetch_dm_stores_coordinates(island, turkey))
-    # store_data_json keys(['totalElements', 'totalPages', 'size', 'page', 'stores'])
-    german_stores = [store for store in store_data_json.get("stores") if store.get("countryCode") == "DE"]
-    print(store_data_json.get("totalElements"))
-    german_stores_list = []
-    for store in german_stores:
-        s = Store_dm(store.get("id"), store.get("countryCode"), store.get("storeNumber"), store.get("address"),
-                     store.get("location").get("lat"), store.get("location").get("lon"))
-        german_stores_list.append(s)
-    print(len(german_stores_list))
-    return german_stores_list
 
 
 def get_kodak_gold_stock_for_store(store):
@@ -72,10 +37,29 @@ def get_kodak_stock_for_store(product_number, store_number):
     return stocklevel
 
 
+def calculate_distance_between_coordinates(latitude1, longitude1, latitude2, longitude2):
+    from math import sin, cos, sqrt, atan2, radians
+    # approximate radius of earth in km
+    R = 6373.0
+    lat1 = radians(52.2296756)
+    lon1 = radians(21.0122287)
+    lat2 = radians(52.406374)
+    lon2 = radians(16.9251681)
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    distance = R * c
+    return distance
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    german_dm_stores = fetch_dm_stores()
-    for store in german_dm_stores:
-        stocklevel = get_kodak_gold_stock_for_store(store)
-        if stocklevel.stocklevel > 0:
-            print(f"Store: {stocklevel.store.storeNumber} in {stocklevel.store.address} besitzt {stocklevel.stocklevel} Packungen Kodak Gold 200")
+    german_stores=fetch_german_dm_stores()
+    save_dm_stores_as_file(german_stores,"german_stores.json")
+#german_dm_stores = fetch_dm_stores()
+# for store in german_dm_stores:
+#     stocklevel = get_kodak_gold_stock_for_store(store)
+#     if stocklevel.stocklevel > 0:
+#         print(
+#             f"Store: {stocklevel.store.storeNumber} in {stocklevel.store.address} besitzt {stocklevel.stocklevel} Packungen Kodak Gold 200")
