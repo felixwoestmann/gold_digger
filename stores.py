@@ -69,3 +69,6 @@ def load_stores_from_file(filename):
                   store.get("latitude"), store.get("longitude"))
         german_stores_list.append(s)
     return german_stores_list
+
+
+def fetch_and_save_stores(): save_stores_as_file(fetch_german_stores(), "german_stores.json")
