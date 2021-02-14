@@ -1,4 +1,5 @@
 import json
+from stocklevels import KODAK_GOLD, KODAK_ULTRAMAX, KODAK_COLORPLUS
 
 
 class Store:
@@ -19,6 +20,14 @@ class Store:
         self.address = address
         self.latitude = latitude
         self.longitude = longitude
+
+    def add_stocklevel(self, new_stocklevel):
+        if new_stocklevel.product_number == KODAK_GOLD:
+            self.stocklevel_gold = new_stocklevel
+        elif new_stocklevel.product_number == KODAK_COLORPLUS:
+            self.stocklevel_colorplus = new_stocklevel
+        elif new_stocklevel.product_number == KODAK_ULTRAMAX:
+            self.stocklevel_ultramax = new_stocklevel
 
 
 class StoreEncoder(json.JSONEncoder):

@@ -17,7 +17,7 @@ def get_kodak_stock_for_store(product_number, store_number):
                      f"https://products.dm.de/store-availability/DE/products/dans/{product_number}/stocklevel"
                      f"?storeNumbers={store_number}")
     stocklevel_data_json = json.loads(r.data)
-    return Stocklevel(product_number, stocklevel_data_json.get("storeAvailability")[0].get("stockLevel"), store_number)
+    return Stocklevel(product_number, stocklevel_data_json.get("storeAvailability")[0].get("stockLevel"))
 
 
 def chunks_of_list(lst, n):
@@ -31,7 +31,7 @@ def get_kodak_stock_for_stores(product_number, stores):
     import urllib3
     stores_to_return = []
     http = urllib3.PoolManager()
-    for stores_chunk in chunks_of_list(stores, 30):
+    for stores_chunk in chunks_of_list(stores, 40):
         converted_list = [str(store.storeNumber) for store in stores_chunk]
         url_stores = ",".join(converted_list)
         r = http.request('GET',
@@ -40,6 +40,6 @@ def get_kodak_stock_for_stores(product_number, stores):
         stocklevel_data_json = json.loads(r.data)
         for item in stocklevel_data_json.get("storeAvailability"):
             store = next(store for store in stores if store.storeNumber == item.get("store").get("storeNumber"))
-            store.stocklevel_gold = Stocklevel(product_number, item.get("stockLevel"))
+            store.add_stocklevel(Stocklevel(product_number, item.get("stockLevel")))
             stores_to_return.append(store)
     return stores_to_return
