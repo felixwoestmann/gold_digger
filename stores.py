@@ -21,13 +21,13 @@ class Store:
         self.latitude = latitude
         self.longitude = longitude
 
-    def get_stocklevel(self,product_number):
+    def get_stocklevel(self, product_number):
         switcher = {
-            KODAK_GOLD:self.stocklevel_gold,
-            KODAK_COLORPLUS:self.stocklevel_colorplus,
-            KODAK_ULTRAMAX:self.stocklevel_ultramax
+            KODAK_GOLD: self.stocklevel_gold,
+            KODAK_COLORPLUS: self.stocklevel_colorplus,
+            KODAK_ULTRAMAX: self.stocklevel_ultramax
         }
-        return switcher.get(product_number,"Not found")
+        return switcher.get(product_number, "Not found")
 
     def add_stocklevel(self, new_stocklevel):
         if new_stocklevel.product_number == KODAK_GOLD:
@@ -89,3 +89,4 @@ def load_stores_from_file(filename):
 
 
 def fetch_and_save_stores(): save_stores_as_file(fetch_german_stores(), "german_stores.json")
+
