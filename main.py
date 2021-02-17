@@ -50,21 +50,26 @@ def prepare_update_message(stores):
     string_list.append("In folgenden Stores sind in deiner Nähe wieder Kodak Filme verfügbar!")
     if stores_with_gold:
         string_list.append("")
+        string_list.append("Kodak Gold 3er")
         for store in stores_with_gold:
             string_list.append(
                 f"Entfernung: {calculate_distance_store(MYLATITUDE, MYLONGITUDE, store):.1f} km "
                 f"Stadt: {store.address['city']} Bestand: {store.get_stocklevel(KODAK_GOLD).stocklevel} "
                 f"Packungen {name_for_product_number.get(KODAK_GOLD, 'Not Found')}")
+
     if stores_with_colorplus:
         string_list.append("")
-        for store in stores_with_gold:
+        string_list.append("Kodak Colorplus")
+        for store in stores_with_colorplus:
             string_list.append(
                 f"Entfernung: {calculate_distance_store(MYLATITUDE, MYLONGITUDE, store):.1f} km "
                 f"Stadt: {store.address['city']} Bestand: {store.get_stocklevel(KODAK_COLORPLUS).stocklevel} "
                 f"Packungen {name_for_product_number.get(KODAK_COLORPLUS, 'Not Found')}")
+
     if stores_with_utramax:
         string_list.append("")
-        for store in stores_with_gold:
+        string_list.append("Kodak Ultramax")
+        for store in stores_with_utramax:
             string_list.append(
                 f"Entfernung: {calculate_distance_store(MYLATITUDE, MYLONGITUDE, store):.1f} km "
                 f"Stadt: {store.address['city']} Bestand: {store.get_stocklevel(KODAK_ULTRAMAX).stocklevel} "
@@ -72,11 +77,23 @@ def prepare_update_message(stores):
     return "\n".join(string_list)
 
 
-def populate_stores_all_stocks(stores):
+def populate_stores_with_all_stocks(stores):
     stores_with_gold = get_kodak_stock_for_stores(KODAK_GOLD, stores)
     stores_with_colorplus = get_kodak_stock_for_stores(KODAK_COLORPLUS, stores_with_gold)
     stores_with_ultramax = get_kodak_stock_for_stores(KODAK_ULTRAMAX, stores_with_colorplus)
     return stores_with_ultramax
+
+
+def filter_stores_for_distance(stores, radius):
+    tuples = []
+    for store in stores:
+        tuples.append((
+            store,
+            calculate_distance_store(MYLATITUDE,
+                                     MYLONGITUDE,
+                                     store)))
+    sorted_by_distance = sorted(tuples, key=lambda tuple: tuple[1])
+    return [tup[0] for tup in sorted_by_distance if tup[1] <= radius]
 
 
 if __name__ == '__main__':
@@ -84,4 +101,5 @@ if __name__ == '__main__':
     # print_distance_stores_with_product(stores, KODAK_GOLD)
     # print_distance_stores_with_product(stores, KODAK_COLORPLUS)
     # print_distance_stores_with_product(stores, KODAK_ULTRAMAX)
-    print(prepare_update_message(populate_stores_all_stocks(stores)))
+    stores_in30km_with_stocks = filter_stores_for_distance(populate_stores_with_all_stocks(stores), 40)
+    print(prepare_update_message(stores_in30km_with_stocks))
