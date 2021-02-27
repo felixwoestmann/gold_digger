@@ -1,3 +1,4 @@
+address = input("Bitte Stadt eingeben:  ")
 from stores import *
 from stocklevels import *
 from geo_service import *
@@ -71,7 +72,6 @@ def filter_stores_for_distance(address, stores, radius):
 
 if __name__ == '__main__':
     stores = load_stores_from_file("german_stores.json")
-    address = "Prinzipalmarkt, Münster"
     print_distance_stores_with_product(address, stores, KODAK_GOLD)
     #print_distance_stores_with_product(address, stores, KODAK_COLORPLUS)
     #print_distance_stores_with_product(address, stores, KODAK_ULTRAMAX)
