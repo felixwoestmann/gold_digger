@@ -19,9 +19,6 @@ def print_distance_stores_with_product(address, stores, product_number):
             f"Entfernung: {tuple[1]:.1f} km Stadt: {tuple[0].address['city']} Bestand: {tuple[0].get_stocklevel(product_number).stocklevel} Packungen {name_for_product_number.get(product_number, 'Not Found')}")
 
 
-
-
-
 def populate_stores_with_all_stocks(stores):
     stores_with_gold = get_kodak_stock_for_stores(KODAK_GOLD, stores)
     stores_with_colorplus = get_kodak_stock_for_stores(KODAK_COLORPLUS, stores_with_gold)
@@ -39,6 +36,27 @@ def filter_stores_for_distance(address, stores, radius):
     return [tup[0] for tup in sorted_by_distance if tup[1] <= radius]
 
 
+def cli():
+    # Create the parser and add arguments
+    parser = argparse.ArgumentParser(
+        description="Zeige alle dm Fillialen mit Kodak Filmen in der Nähe der angegebenen Addresse.")
+    parser.add_argument("--address", required=True, help='dein Wohnort')
+    parser.add_argument("--radius", help="Radius in km um den Wohnort indem gesucht wird. Standard: 40km")
+    parser.add_argument("--filmtypes", nargs="+",
+                        help="Nach welchen Filmtypen soll gesucht werden. Optionen: GOLD, COLORPLUS, ULTRAMAX. Standard: alle")
+    args = parser.parse_args()
+    address = args.address
+    radius = 40
+    filmtypes = ["GOLD", "COLORPLUS", "ULTRAMAX"]
+    if args.radius:
+        radius = args.radius
+    if args.filmtypes:
+        # sanitize input
+        for type in args.filmtypes:
+            if type not in filmtypes:
+                exit(2)
+            filmtypes = args.filmtypes
+    return address, radius, filmtypes
 
 
 if __name__ == '__main__':
