@@ -63,29 +63,25 @@ def cli_argparser():
     return args.address, radius, filmtypes
 
 
+def generate_output_for_filmtype(filmtype, stores):
+    print(f"{name_for_product_number[filmtype]} ist verfügbar in folgenden Filialen:")
+    stores_with_stock = get_kodak_stock_for_stores(filmtype, stores)
+
+    print_stores_sorted_by_distance(address,
+                                    [store_with_stock for store_with_stock in stores_with_stock if
+                                     store_with_stock.get_stocklevel(filmtype).stocklevel > 0], filmtype)
+    print("\n")
+
+
 if __name__ == '__main__':
     address, radius, filmtypes = cli_argparser()
     stores = load_stores_from_file("german_stores.json")
     filtered_stores_distance = filter_stores_for_distance(address, stores, radius)
     print(
-        f"Suche in {len(filtered_stores_distance)} dm Filialen in {radius} km Radius um {address} nach {','.join(filmtypes)} gesucht")
+        f"Suche in {len(filtered_stores_distance)} dm Filialen in {radius} km Radius um {address} nach {'/'.join(filmtypes)}\n")
     if "GOLD" in filmtypes:
-        print("Kodak Gold ist verfügbar in folgenden Filialen:")
-        stores_with_stock = get_kodak_stock_for_stores(KODAK_GOLD, filtered_stores_distance)
-        print_stores_sorted_by_distance(address, stores_with_stock, KODAK_GOLD)
-        print("\n")
+        generate_output_for_filmtype(KODAK_GOLD, filtered_stores_distance)
     if "COLORPLUS" in filmtypes:
-        print("Kodak Colorplus ist verfügbar in folgenden Filialen:")
-        stores_with_stock = get_kodak_stock_for_stores(KODAK_COLORPLUS, filtered_stores_distance)
-        print_stores_sorted_by_distance(address, stores_with_stock, KODAK_COLORPLUS)
-        print("\n")
+        generate_output_for_filmtype(KODAK_COLORPLUS, filtered_stores_distance)
     if "ULTRAMAX" in filmtypes:
-        print("Kodak Ultramax ist verfügbar in folgenden Filialen:")
-        stores_with_stock = get_kodak_stock_for_stores(KODAK_ULTRAMAX, filtered_stores_distance)
-        print_stores_sorted_by_distance(address, stores_with_stock, KODAK_ULTRAMAX)
-        print("\n")
-    # print_distance_stores_with_product(args.Address, stores, KODAK_GOLD)
-    # print_distance_stores_with_product(address, stores, KODAK_COLORPLUS)
-    # print_distance_stores_with_product(address, stores, KODAK_ULTRAMAX)
-    # stores_in30km_with_stocks = filter_stores_for_distance(populate_stores_with_all_stocks(stores), 40)
-    # print(prepare_update_message(stores_in30km_with_stocks))
+        generate_output_for_filmtype(KODAK_ULTRAMAX, filtered_stores_distance)
